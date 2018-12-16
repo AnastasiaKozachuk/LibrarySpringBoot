@@ -30,6 +30,12 @@
 
 <div class="container" style="text-align: center">
 
+    <div style="text-align: right; margin-bottom: 15px;">
+        <form method="GET" action="${contextPath}/viewAll" style="display: inline; width: 200px;">
+            <button class="btn btn-view-all" type="submit">Back</button>
+        </form>
+    </div>
+
     <div class="row">
 
         <div class="col-xs-12">

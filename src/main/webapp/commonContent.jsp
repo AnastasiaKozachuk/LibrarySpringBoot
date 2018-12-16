@@ -31,26 +31,35 @@
 <div class="container">
 
 
+    <div style="text-align: right; margin-bottom: 15px;">
+        <form method="GET" action="${contextPath}/login" style="display: inline; width: 200px;">
+            <button class="btn btn-view-all" type="submit">Log Out</button>
+        </form>
+
+        <form method="GET" action="${contextPath}/createNew" style="display: inline;width: 200px;">
+            <button class="btn btn-view-all" type="submit">Create new</button>
+        </form>
+    </div>
+
     <div class="filters">
 
         <form method="GET" action="${contextPath}/filterContent" class="form-signin">
 
-                <h2 style="text-align: center; padding-bottom: 10px; margin-top: 0px">Filtering the content</h2>
-                <input name="author" type="text" class="form-control" placeholder="Enter author"
-                       autofocus="true"/>
-                <input name="headline" type="text" class="form-control" placeholder="Enter headline"/>
+            <h2 style="text-align: center; padding-bottom: 10px; margin-top: 0px">Filtering the content</h2>
+            <input name="author" type="text" class="form-control" placeholder="Enter author"
+                   autofocus="true"/>
+            <input name="headline" type="text" class="form-control" placeholder="Enter headline"/>
 
-                <input name="date" type="date" class="form-control" placeholder="Pick up date"/>
+            <input name="date" type="date" class="form-control" placeholder="Pick up date"/>
 
             <select name="genre" style="margin-top: 10px; width: 200px; height: 40px;">
                 <option value="0">Not selected</option>
-            <c:forEach var="option" items="${options}">
-                <option value="${option.genreID}">${option.genreName}</option>
-            </c:forEach>
-                </select>
+                <c:forEach var="option" items="${options}">
+                    <option value="${option.genreID}">${option.genreName}</option>
+                </c:forEach>
+            </select>
 
-                <button class="btn btn-primary btn-block" type="submit">Filter</button>
-
+            <button class="btn btn-primary btn-block" type="submit">Filter</button>
 
 
         </form>
@@ -68,16 +77,18 @@
 
                 </div>
 
-                <form method="GET" action="${contextPath}/showOne" >
+                <form method="GET" action="${contextPath}/showOne">
                     <input hidden type="text" name="contentID" value="${subList.contentID}">
-                    <button type="submit" class="btn btn-default" style="background-color:#33bf71; color: #fff" >Show story</button>
+                    <button type="submit" class="btn btn-default" style="background-color:#33bf71; color: #fff">Show
+                        story
+                    </button>
                 </form>
 
             </div>
         </div>
 
     </c:forEach>
-
+    <h3 style="text-align: center; padding-bottom: 10px; margin-top: 50px; color:green;">${notFound}</h3>
 
 </div>
 <!-- /container -->

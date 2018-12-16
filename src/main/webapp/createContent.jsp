@@ -30,6 +30,12 @@
 
 <div class="container">
 
+    <div style="text-align: right; margin-bottom: 15px;">
+        <form method="GET" action="${contextPath}/viewAll" style="display: inline; width: 200px;">
+            <button class="btn btn-view-all" type="submit">Back</button>
+        </form>
+    </div>
+
     <form:form method="POST" action="${contextPath}/createNew" modelAttribute="contentForm" class="form-signin">
         <h2 class="form-signin-heading">Create your own story</h2>
 
@@ -62,9 +68,6 @@
         </spring:bind>
 
         <button class="btn btn-lg btn-primary btn-block" type="submit">Submit</button>
-        <div  class="${success != null ? 'has-success' : ''}">
-            <span>${success}</span>
-        </div>
     </form:form>
 
 </div>

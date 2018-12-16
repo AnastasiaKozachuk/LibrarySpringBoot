@@ -58,10 +58,7 @@ public class ContentController {
 
         contentService.save(contentForm);
 
-        model.addAttribute("options", genreService.getGenresMap());
-        model.addAttribute("success", "Story is saved successfully!");
-
-        return "createContent";
+        return "redirect:saved";
     }
 
     @RequestMapping(value = "/viewAll", method = RequestMethod.GET)
@@ -87,10 +84,19 @@ public class ContentController {
 
         List<Content> allContent = contentService.filterContent(author, localDate, genre, headline);
 
-        model.addAttribute("elements", allContent);
+        if (!allContent.isEmpty()) {
+            model.addAttribute("elements", allContent);
+        } else {
+            model.addAttribute("notFound", "Nothing was found!");
+        }
         model.addAttribute("options", genreService.findAll());
 
         return "commonContent";
+    }
+
+    @RequestMapping(value = "/saved", method = RequestMethod.GET)
+    public String login(Model model) {
+        return "savedSuccessfully";
     }
 
     @RequestMapping(value = "/showOne", method = RequestMethod.GET)
