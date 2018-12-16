@@ -1,9 +1,12 @@
 package com.library.library.controller;
 
+import com.library.library.model.Account;
 import com.library.library.model.Content;
 import com.library.library.model.Review;
+import com.library.library.service.AccountService;
 import com.library.library.service.ContentService;
 import com.library.library.service.GenreService;
+import com.library.library.service.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import javax.validation.Valid;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Collections;
 import java.util.List;
 
 @Controller
@@ -27,6 +31,12 @@ public class ContentController {
 
     @Autowired
     private GenreService genreService;
+
+    @Autowired
+    private AccountService accountService;
+
+    @Autowired
+    private ReviewService reviewService;
 
     @RequestMapping(value = "/createNew", method = RequestMethod.GET)
     public String createNewStory(Model model) {
@@ -88,23 +98,43 @@ public class ContentController {
 
         Content content = contentService.findById(Integer.valueOf(contentId));
 
+        List<Review> allContentReview = reviewService.getAllReviewForContent(content);
+        Collections.reverse(allContentReview);
         model.addAttribute("content", content);
-        model.addAttribute("reviewForm", new Review());
+        model.addAttribute("reviews", allContentReview);
 
         return "oneContentView";
     }
 
     @RequestMapping(value = "/addReview", method = RequestMethod.POST)
-    public String addReview(@Valid @ModelAttribute("reviewForm") Review reviewForm, BindingResult bindingResult, Model model) {
+    public String addReview(@RequestParam(value = "mark", required = false) String mark, @RequestParam(value = "reviewText", required = false) String reviewText, @RequestParam(value = "contentID", required = false) String contentID, @RequestParam(value = "login", required = false) String login, Model model) {
 
-        if (bindingResult.hasErrors()) {
+        Content content = contentService.findById(Integer.valueOf(contentID));
+        model.addAttribute("content", content);
 
+        if (StringUtils.isEmpty(mark) || StringUtils.isEmpty(reviewText) || StringUtils.isEmpty(login)) {
+            model.addAttribute("error", "Fields can't be empty");
             return "oneContentView";
         }
 
-        model.addAttribute("content", reviewForm.getContent());
-        model.addAttribute("reviewForm", new Review());
+        Account account = accountService.findByLogin(login);
 
+        if (account == null) {
+            model.addAttribute("error", "Account with such login doesn't exist");
+            return "oneContentView";
+        }
+
+        Review review = new Review();
+        review.setMark(Integer.valueOf(mark));
+        review.setReviewText(reviewText);
+        review.setAccount(account);
+        review.setContent(content);
+
+        reviewService.save(review);
+
+        List<Review> allContentReview = reviewService.getAllReviewForContent(content);
+        Collections.reverse(allContentReview);
+        model.addAttribute("reviews", allContentReview);
 
         return "oneContentView";
     }

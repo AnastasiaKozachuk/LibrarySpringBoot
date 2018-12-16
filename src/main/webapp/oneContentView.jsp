@@ -40,7 +40,7 @@
                     ${content.text}
                 </div>
                 <div class="panel-footer" style="background-color:#abeabe"> ${content.date}</div>
-                <div class="panel-footer" style="background-color:#33bf71; color: #fff">  ${content.author}</div>
+                <div class="panel-footer" style="background-color:#33bf71; color: #fff"> ${content.author}</div>
             </div>
         </div>
 
@@ -50,16 +50,16 @@
         <div class="col-xs-12 ">
             <div class="panel panel-default">
                 <div class="panel-heading" style="background-color:#abeabe">Genres</div>
-    <c:forEach var="genre" items="${content.genres}">
+                <c:forEach var="genre" items="${content.genres}">
                     <div class="panel-body">
                             ${genre.genreName}
                     </div>
-    </c:forEach>
+                </c:forEach>
             </div>
         </div>
     </div>
 
-    <form:form  method="POST" action="${contextPath}/addReview" modelAttribute="reviewForm" >
+    <form method="POST" action="${contextPath}/addReview">
 
         <div style="margin-top: 15px;">
 
@@ -68,48 +68,71 @@
             <div class="row" style="margin-bottom: 15px;">
 
                 <div class="col-xs-12">
-                    1<form:radiobutton path="mark" value="1" checked="checked" style="margin: 15px;"/>
-                    2<form:radiobutton path="mark" value="2" style="margin: 15px;"/>
-                    3<form:radiobutton path="mark" value="3" style="margin: 15px;"/>
-                    4<form:radiobutton path="mark" value="4" style="margin: 15px;"/>
-                    5<form:radiobutton path="mark" value="5" style="margin: 15px;"/>
+                    <input type="radio" id="1" style="margin: 15px;" name="mark" value="1" checked>
+                    <label for="1">1</label>
+
+                    <input type="radio" id="2" style="margin: 15px;" name="mark" value="2">
+                    <label for="2">2</label>
+
+                    <input type="radio" id="3" style="margin: 15px;" name="mark" value="3">
+                    <label for="3">3</label>
+
+                    <input type="radio" id="4" style="margin: 15px;" name="mark" value="4">
+                    <label for="4">4</label>
+
+                    <input type="radio" id="5" style="margin: 15px;" name="mark" value="5">
+                    <label for="5">5</label>
                 </div>
 
 
             </div>
 
-            <div class="row" >
+            <div class="row">
                 <div class="col-xs-12">
-                    <spring:bind path="reviewText">
-                        <div class="form-group ${status.error ? 'has-error' : ''}">
-                            <form:textarea type="text" path="reviewText" class="form-control" placeholder="Review text"
-                                           autofocus="true" style="height:150px;resize:none"/>
-                            <form:errors path="reviewText"/>
-                        </div>
-                    </spring:bind>
+                    <textarea type="text" class="form-control" placeholder="Review text"
+                              autofocus="true" name="reviewText" style="height:150px;resize:none"></textarea>
+
                 </div>
             </div>
 
-            <form:input type="hidden" path="content" class="form-control" value="${content}"/>
-            <div class="row" >
+            <div class="row">
+                <div class="col-xs-12" style="margin-top: 10px;">
+                    <input type="text" class="form-control" placeholder="Your login" name="login"/>
+                </div>
+            </div>
+
+            <input type="hidden" name="contentID" class="form-control" value="${content.contentID}"/>
+
+            <div class="${error != null ? 'has-error' : ''}">
+                <span>${error}</span>
+            </div>
+            <div class="row" style="margin-top: 15px;">
 
                 <div class="col-xs-12">
-                    <button type="submit" class="btn btn-default" style="background-color:#33bf71; color: #fff">Add review</button>
+                    <button type="submit" class="btn btn-default" style="background-color:#33bf71; color: #fff">Add
+                        review
+                    </button>
                 </div>
-
-
             </div>
-
-
         </div>
+    </form>
 
+    <div style="margin-top: 60px">
+        <c:forEach var="review" items="${reviews}">
 
-
-    </form:form>
-
-
-
-
+            <div class="panel panel-default" style="margin: 20px;">
+                <div class="panel-body" style="background-color:#abeabe">
+                    Mark: ${review.mark}
+                </div>
+                <div class="panel-body">
+                        ${review.reviewText}
+                </div>
+                <div class="panel-footer" style="background-color:#33bf71; color: #fff">
+                        ${review.account.firstName}
+                        ${review.account.secondName}</div>
+            </div>
+        </c:forEach>
+    </div>
 
 </div>
 <!-- /container -->
